@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from "react";
 
-const App = () => {
-  const [value, setValue] = useState("");
-  const [list, setList] = useState([]);
+type Task = {
+  id: number;
+  title: string;
+};
 
-  function handleList() {
+const App = (): JSX.Element => {
+  const [value, setValue] = useState<string>("");
+  const [list, setList] = useState<Task[]>([]);
+
+  function handleList(): void {
     if (!value) return;
-    const newTask = {
+    const newTask: Task = {
       id: Date.now(),
       title: value,
     };
@@ -15,16 +20,17 @@ const App = () => {
     localStorage.setItem("list", JSON.stringify(updatedList));
     setValue("");
   }
-  function handleDelete(id) {
+  function handleDelete(id: number): void {
     const updatedList = list.filter((task) => task.id !== id);
     setList(updatedList);
     localStorage.setItem("list", JSON.stringify(updatedList));
   }
 
   useEffect(() => {
-    const savedList = JSON.parse(localStorage.getItem("list"));
-    if (savedList) {
-      setList(savedList);
+    const getData = localStorage.getItem("list");
+    if (getData) {
+      const parsedData: Task[] = JSON.parse(getData);
+      setList(parsedData);
     }
   }, []);
 
@@ -76,3 +82,7 @@ const App = () => {
 };
 
 export default App;
+
+/*
+: void means the function returns nothing.
+*/
