@@ -9,8 +9,8 @@ router.post("/", async (req, res) => {
   try {
     const newTask = await Task.create({ task });
     res.json(newTask);
-  } catch (err) {
-    res.status(500).json({ error: "Error creating task" });
+  } catch (error) {
+    res.status(500).json({ Error: error.message });
   }
 });
 
@@ -19,8 +19,8 @@ router.get("/", async (req, res) => {
   try {
     const tasks = await Task.find();
     res.json(tasks);
-  } catch (err) {
-    res.status(500).json({ error: "Error fetching task" });
+  } catch (error) {
+    res.status(500).json({ Error: error.message });
   }
 });
 
@@ -35,7 +35,7 @@ router.put("/:id", async (req, res) => {
     );
     res.json(tasks);
   } catch (error) {
-    res.status(500).json({ message: "Error updating the task" });
+    res.status(500).json({ Error: error.message });
   }
 });
 
@@ -45,7 +45,7 @@ router.delete("/:id", async (req, res) => {
     const task = await Task.findByIdAndDelete(req.params.id);
     res.json({ message: "Task deleted" });
   } catch (error) {
-    res.status(500).json({ message: "Error deleting the task" });
+    res.status(500).json({ Error: error.message });
   }
 });
 
