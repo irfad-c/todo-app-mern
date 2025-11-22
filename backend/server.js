@@ -14,12 +14,16 @@ app.use(express.json());
 //routes
 app.use("/api/tasks", taskRoutes);
 
-try {
-  mongoose.connect(process.env.MONGO_URI);
-  console.log("MongoDB connected");
-} catch (error) {
-  console.log("Error connecting to DB", error);
+async function connectDB() {
+  try {
+    mongoose.connect(process.env.MONGO_URI);
+    console.log("MongoDB connected");
+  } catch (error) {
+    console.error("Error connecting to DB", error.message);
+    process.exit(1);
+  }
 }
+connectDB();
 
 //server
 const PORT = process.env.PORT || 5000;
