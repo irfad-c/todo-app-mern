@@ -1,11 +1,11 @@
-import express from "express";
+import express, { Application } from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
-import taskRoutes from "./routes/taskRoutes.js";
+import taskRoutes from "./routes/taskRoutes";
 
-const app = express();
 dotenv.config();
+const app: Application = express();
 
 //middleware
 app.use(cors());
@@ -14,11 +14,11 @@ app.use(express.json());
 //routes
 app.use("/api/tasks", taskRoutes);
 
-async function connectDB() {
+async function connectDB(): Promise<void> {
   try {
-    mongoose.connect(process.env.MONGO_URI);
+    mongoose.connect(process.env.MONGO_URI as string);
     console.log("MongoDB connected");
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error connecting to DB", error.message);
     process.exit(1);
   }
