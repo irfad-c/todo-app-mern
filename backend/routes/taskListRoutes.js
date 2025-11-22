@@ -6,6 +6,9 @@ const router = express.Router();
 //Create
 router.post("/", async (req, res) => {
   const { task } = req.body;
+  if (!task) {
+    return res.status(400).json({ Error: "Task is required" });
+  }
   try {
     const newTask = await Task.create({ task });
     res.json(newTask);
@@ -27,6 +30,9 @@ router.get("/", async (req, res) => {
 //Update
 router.put("/:id", async (req, res) => {
   const { task } = req.body;
+  if (!task) {
+    return res.status(400).json({ Error: "Task is required" });
+  }
   try {
     const tasks = await Task.findByIdAndUpdate(
       req.params.id,
