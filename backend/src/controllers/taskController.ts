@@ -1,32 +1,39 @@
+import { Request, Response } from "express";
 import Task from "../models/Task.js";
 
 //Create
-export async function createTask(req, res) {
-  const { task } = req.body;
+export async function createTask(
+  req: Request,
+  res: Response
+): Promise<Response> {
+  const { task } = req.body as { task?: string };
   if (!task) {
     return res.status(400).json({ Error: "Task is required" });
   }
   try {
     const newTask = await Task.create({ task });
     return res.status(201).json(newTask);
-  } catch (error) {
+  } catch (error: any) {
     return res.status(500).json({ Error: error.message });
   }
 }
 
 //Read
-export async function readTask(req, res) {
+export async function readTask(req: Request, res: Response): Promise<Response> {
   try {
     const getTask = await Task.find();
     res.status(200).json(getTask);
-  } catch (error) {
+  } catch (error: any) {
     return res.status(500).json({ Error: error.message });
   }
 }
 
 //Update
-export async function updateTask(req, res) {
-  const { task } = req.body;
+export async function updateTask(
+  req: Request,
+  res: Response
+): Promise<Response> {
+  const { task } = req.body as { task?: string };
   const { id } = req.params;
   if (!task) {
     return res.status(400).json({ Error: "Task is required" });
@@ -41,13 +48,16 @@ export async function updateTask(req, res) {
       return res.status(404).json({ Error: "Task not found" });
     }
     return res.status(200).json(updatedTask);
-  } catch (error) {
+  } catch (error: any) {
     return res.status(500).json({ Error: error.message });
   }
 }
 
 //Delete
-export async function deleteTask(req, res) {
+export async function deleteTask(
+  req: Request,
+  res: Response
+): Promise<Response> {
   const { id } = req.params;
 
   try {
@@ -56,7 +66,7 @@ export async function deleteTask(req, res) {
       return res.status(404).json({ Error: "Task not found" });
     }
     return res.status(200).json(deletedTask);
-  } catch (error) {
+  } catch (error: any) {
     return res.status(500).json({ Error: error.message });
   }
 }
