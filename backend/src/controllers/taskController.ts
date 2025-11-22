@@ -22,7 +22,7 @@ export async function createTask(
 export async function readTask(req: Request, res: Response): Promise<Response> {
   try {
     const getTask = await Task.find();
-    res.status(200).json(getTask);
+    return res.status(200).json(getTask);
   } catch (error: any) {
     return res.status(500).json({ Error: error.message });
   }
