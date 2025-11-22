@@ -7,10 +7,10 @@ export async function createTask(req, res) {
     return res.status(400).json({ Error: "Task is required" });
   }
   try {
-    const newTask = await Task.create({task});
+    const newTask = await Task.create({ task });
     return res.status(201).json(newTask);
   } catch (error) {
-    return res.status(500).json({ Error: "Error creating the task" });
+    return res.status(500).json({ Error: error.message });
   }
 }
 
