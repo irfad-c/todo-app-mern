@@ -2,8 +2,7 @@ import React, { useEffect, useState, ReactElement } from "react";
 import axios from "axios";
 
 type Task = {
-  id: number;
-  title: string;
+  task: string;
 };
 
 const App = (): ReactElement => {
@@ -24,6 +23,20 @@ const App = (): ReactElement => {
       console.log("Cant send the data to backend", error.message);
     }
   }
+
+  useEffect(() => {
+    async function importData(): Promise<void> {
+      try {
+        const response = await axios.get<Task[]>(
+          "http://localhost:5000/api/tasks"
+        );
+        setList(response.data);
+      } catch (error: any) {
+        console.log("Error fetching data from backend", error.message);
+      }
+    }
+    importData();
+  }, []);
 
   function handleDelete(id: number): void {
     const updatedList = list.filter((task) => task.id !== id);
