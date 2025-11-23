@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, ReactElement } from "react";
 
 type Task = {
   id: number;
   title: string;
 };
 
-const App = (): JSX.Element => {
+const App = (): ReactElement => {
   const [value, setValue] = useState<string>("");
   const [list, setList] = useState<Task[]>([]);
 
@@ -20,6 +20,7 @@ const App = (): JSX.Element => {
     localStorage.setItem("list", JSON.stringify(updatedList));
     setValue("");
   }
+
   function handleDelete(id: number): void {
     const updatedList = list.filter((task) => task.id !== id);
     setList(updatedList);
@@ -29,7 +30,7 @@ const App = (): JSX.Element => {
   useEffect(() => {
     const getData = localStorage.getItem("list");
     if (getData) {
-      const parsedData: Task[] = JSON.parse(getData);
+      const parsedData = JSON.parse(getData) as Task[];
       setList(parsedData);
     }
   }, []);
