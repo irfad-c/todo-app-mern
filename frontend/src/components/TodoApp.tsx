@@ -1,4 +1,5 @@
 import React, { useEffect, useState, ReactElement } from "react";
+import axios from "axios";
 
 type Task = {
   id: number;
@@ -9,16 +10,19 @@ const App = (): ReactElement => {
   const [value, setValue] = useState<string>("");
   const [list, setList] = useState<Task[]>([]);
 
-  function handleList(): void {
-    if (!value) return;
-    const newTask: Task = {
-      id: Date.now(),
-      title: value,
-    };
-    const updatedList = [...list, newTask];
-    setList(updatedList);
-    localStorage.setItem("list", JSON.stringify(updatedList));
-    setValue("");
+  async function handleList() {
+    if (!value) {
+      console.log("Task is required");
+      return;
+    }
+    try {
+      await axios.post("http://localhost:5000/api/tasks", {
+        task: value as string,
+      });
+      setValue("");
+    } catch (error: any) {
+      console.log("Cant send the data to backend", error.message);
+    }
   }
 
   function handleDelete(id: number): void {
