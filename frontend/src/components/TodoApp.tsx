@@ -89,7 +89,6 @@ const App = (): ReactElement => {
                 key={item._id}
                 className="flex justify-between items-center mb-3 p-3 bg-white rounded-lg"
               >
-                {" "}
                 <li className="font-medium  rounded-xl">{item.task}</li>
                 <button
                   className="bg-red-500 text-white px-3 py-1 rounded-lg font-semibold hover:bg-red-700 w-[30%]"
