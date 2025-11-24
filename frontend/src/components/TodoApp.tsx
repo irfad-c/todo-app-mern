@@ -9,17 +9,17 @@ const App = (): ReactElement => {
   const [value, setValue] = useState<string>("");
   const [list, setList] = useState<Task[]>([]);
 
-  async function handleList() {
+  async function handleList(): Promise<void> {
     if (!value) {
       console.log("Task is required");
       return;
     }
     try {
       await axios.post("http://localhost:5000/api/tasks", {
-        task: value as string,
+        task: value,
       });
       setValue("");
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.log("Cant send the data to backend", error.message);
     }
   }
