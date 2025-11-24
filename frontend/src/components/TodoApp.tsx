@@ -2,12 +2,27 @@ import React, { useEffect, useState, ReactElement } from "react";
 import axios from "axios";
 
 type Task = {
+  _id: string;
   task: string;
 };
 
 const App = (): ReactElement => {
   const [value, setValue] = useState<string>("");
   const [list, setList] = useState<Task[]>([]);
+
+  async function importData(): Promise<void> {
+    try {
+      const response = await axios.get<Task[]>(
+        "http://localhost:5000/api/tasks"
+      );
+      setList(response.data);
+    } catch (error: any) {
+      console.log("Error fetching data from backend", error.message);
+    }
+  }
+  useEffect(() => {
+    importData();
+  }, []);
 
   async function handleList(): Promise<void> {
     if (!value) {
@@ -19,38 +34,24 @@ const App = (): ReactElement => {
         task: value,
       });
       setValue("");
+      importData();
     } catch (error: unknown) {
       console.log("Cant send the data to backend", error.message);
     }
   }
 
-  useEffect(() => {
-    async function importData(): Promise<void> {
-      try {
-        const response = await axios.get<Task[]>(
-          "http://localhost:5000/api/tasks"
-        );
-        setList(response.data);
-      } catch (error: any) {
-        console.log("Error fetching data from backend", error.message);
+  async function handleDelete(_id: string): Promise<void> {
+    try {
+      await axios.delete(`http://localhost:5000/api/tasks/${_id}`);
+      importData();
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.log("Axios error:", error.message);
+      } else {
+        console.log("Unknown error happened");
       }
     }
-    importData();
-  }, []);
-
-  function handleDelete(id: number): void {
-    const updatedList = list.filter((task) => task.id !== id);
-    setList(updatedList);
-    localStorage.setItem("list", JSON.stringify(updatedList));
   }
-
-  useEffect(() => {
-    const getData = localStorage.getItem("list");
-    if (getData) {
-      const parsedData = JSON.parse(getData) as Task[];
-      setList(parsedData);
-    }
-  }, []);
 
   return (
     <>
@@ -77,15 +78,15 @@ const App = (): ReactElement => {
           <ul className="w-full ">
             {list.map((item) => (
               <div
-                key={item.id}
+                key={item._id}
                 className="flex justify-between items-center mb-3 p-3 bg-white rounded-lg"
               >
                 {" "}
-                <li className="font-medium  rounded-xl">{item.title}</li>
+                <li className="font-medium  rounded-xl">{item.task}</li>
                 <button
                   className="bg-red-500 text-white px-3 py-1 rounded-lg font-semibold hover:bg-red-700 w-[30%]"
                   onClick={() => {
-                    handleDelete(item.id);
+                    handleDelete(item._id);
                   }}
                 >
                   Delete
