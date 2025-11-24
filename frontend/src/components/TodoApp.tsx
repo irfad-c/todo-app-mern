@@ -16,8 +16,12 @@ const App = (): ReactElement => {
         "http://localhost:5000/api/tasks"
       );
       setList(response.data);
-    } catch (error: any) {
-      console.log("Error fetching data from backend", error.message);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.log("Axios error", error.message);
+      } else {
+        console.log("Unknown error");
+      }
     }
   }
   useEffect(() => {
@@ -35,8 +39,12 @@ const App = (): ReactElement => {
       });
       setValue("");
       importData();
-    } catch (error: unknown) {
-      console.log("Cant send the data to backend", error.message);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.log("Axios error", error.message);
+      } else {
+        console.log("Unknown error");
+      }
     }
   }
 
