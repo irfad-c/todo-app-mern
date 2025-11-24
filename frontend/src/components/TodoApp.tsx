@@ -83,22 +83,22 @@ const App = (): ReactElement => {
         </div>
         <div className="flex flex-col m-5 p-5 bg-blue-100 items-center w-full max-w-md  shadow-md mb-5 rounded-xl">
           <h2 className=" rounded text-xl font-bold m-5 p-5">Task Lists</h2>
+
           <ul className="w-full ">
             {list.map((item) => (
-              <div
-                key={item._id}
-                className="flex justify-between items-center mb-3 p-3 bg-white rounded-lg"
-              >
-                <li className="font-medium  rounded-xl">{item.task}</li>
-                <button
-                  className="bg-red-500 text-white px-3 py-1 rounded-lg font-semibold hover:bg-red-700 w-[30%]"
-                  onClick={() => {
-                    handleDelete(item._id);
-                  }}
-                >
-                  Delete
-                </button>
-              </div>
+              <li key={item._id} className="font-medium  rounded-xl">
+                <div className="flex justify-between items-center mb-3 p-3 bg-white rounded-lg">
+                  {item.task}
+                  <button
+                    className="bg-red-500 text-white px-3 py-1 rounded-lg font-semibold hover:bg-red-700 w-[30%]"
+                    onClick={() => {
+                      handleDelete(item._id);
+                    }}
+                  >
+                    Delete
+                  </button>
+                </div>
+              </li>
             ))}
           </ul>
         </div>
