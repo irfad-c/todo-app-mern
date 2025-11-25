@@ -77,7 +77,11 @@ const App = (): ReactElement => {
       setEditValue("");
       importData();
     } catch (error) {
-      console.log("Error updating");
+      if (axios.isAxiosError(error)) {
+        console.log("Axios error", error.message);
+      } else {
+        console.log("Unknown eror happened");
+      }
     }
   }
 
@@ -123,7 +127,10 @@ const App = (): ReactElement => {
                       </button>
                       <button
                         className="bg-gray-400 text-white px-3 py-1 rounded-lg"
-                        onClick={() => setEditId(null)}
+                        onClick={() => {
+                          setEditId(null);
+                          setEditValue("");
+                        }}
                       >
                         Cancel
                       </button>
