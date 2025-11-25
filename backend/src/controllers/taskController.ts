@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import Task from "../models/Task.js";
+import Task from "../models/Task";
 
 //Create
 export async function createTask(
@@ -65,7 +65,7 @@ export async function deleteTask(
     if (!deletedTask) {
       return res.status(404).json({ Error: "Task not found" });
     }
-    return res.status(200).json(deletedTask);
+    return res.status(200).json({ message: "Task deleted succefully" });
   } catch (error: any) {
     return res.status(500).json({ Error: error.message });
   }
