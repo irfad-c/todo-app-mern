@@ -9,6 +9,8 @@ type Task = {
 const App = (): ReactElement => {
   const [value, setValue] = useState<string>("");
   const [list, setList] = useState<Task[]>([]);
+  const [editId, setEditId] = useState<string | null>(null);
+  const [editValue, setEditValue] = useState("");
 
   async function importData(): Promise<void> {
     try {
@@ -61,6 +63,24 @@ const App = (): ReactElement => {
     }
   }
 
+  function handleEdit(_id: string, currentTask: string): void {
+    setEditId(_id);
+    setEditValue(currentTask);
+  }
+
+  async function handleSave(id: string): Promise<void> {
+    try {
+      await axios.put(`http://localhost:5000/api/tasks/${id}`, {
+        task: editValue,
+      });
+      setEditId(null);
+      setEditValue("");
+      importData();
+    } catch (error) {
+      console.log("Error updating");
+    }
+  }
+
   return (
     <>
       <div className="flex flex-col justify-center items-center h-screen ">
@@ -88,7 +108,30 @@ const App = (): ReactElement => {
             {list.map((item) => (
               <li key={item._id} className="font-medium  rounded-xl">
                 <div className="flex justify-between items-center mb-3 p-3 bg-white rounded-lg">
-                  <span>{item.task}</span>
+                  {editId === item._id ? (
+                    <div className="flex w-full justify-between items-center gap-3">
+                      <input
+                        className="border p-2 rounded-lg w-full"
+                        value={editValue}
+                        onChange={(e) => setEditValue(e.target.value)}
+                      />
+                      <button
+                        className="bg-green-600 text-white px-3 py-1 rounded-lg"
+                        onClick={() => handleSave(item._id)}
+                      >
+                        Save
+                      </button>
+                      <button
+                        className="bg-gray-400 text-white px-3 py-1 rounded-lg"
+                        onClick={() => setEditId(null)}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  ) : (
+                    <span>{item.task}</span>
+                  )}
+
                   <div className="flex gap-4">
                     <button
                       className="bg-red-500 text-white px-3 py-1 rounded-lg font-semibold hover:bg-red-700 "
@@ -98,7 +141,12 @@ const App = (): ReactElement => {
                     >
                       Delete
                     </button>
-                    <button className="bg-orange-500 text-white px-3 py-1  rounded-lg font-semibold hover:bg-orange-700 ">
+                    <button
+                      className="bg-orange-500 text-white px-3 py-1  rounded-lg font-semibold hover:bg-orange-700 "
+                      onClick={() => {
+                        handleEdit(item._id, item.task);
+                      }}
+                    >
                       Edit
                     </button>
                   </div>
