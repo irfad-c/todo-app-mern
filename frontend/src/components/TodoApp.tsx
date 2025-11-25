@@ -139,24 +139,26 @@ const App = (): ReactElement => {
                     <span>{item.task}</span>
                   )}
 
-                  <div className="flex gap-4">
-                    <button
-                      className="bg-red-500 text-white px-3 py-1 rounded-lg font-semibold hover:bg-red-700 "
-                      onClick={() => {
-                        handleDelete(item._id);
-                      }}
-                    >
-                      Delete
-                    </button>
-                    <button
-                      className="bg-orange-500 text-white px-3 py-1  rounded-lg font-semibold hover:bg-orange-700 "
-                      onClick={() => {
-                        handleEdit(item._id, item.task);
-                      }}
-                    >
-                      Edit
-                    </button>
-                  </div>
+                  {editId !== item._id && (
+                    <div className="flex gap-4">
+                      <button
+                        className="bg-red-500 text-white px-3 py-1 rounded-lg font-semibold hover:bg-red-700 "
+                        onClick={() => {
+                          handleDelete(item._id);
+                        }}
+                      >
+                        Delete
+                      </button>
+                      <button
+                        className="bg-orange-500 text-white px-3 py-1  rounded-lg font-semibold hover:bg-orange-700 "
+                        onClick={() => {
+                          handleEdit(item._id, item.task);
+                        }}
+                      >
+                        Edit
+                      </button>
+                    </div>
+                  )}
                 </div>
               </li>
             ))}
