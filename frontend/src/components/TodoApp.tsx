@@ -77,7 +77,11 @@ const App = (): ReactElement => {
       setEditValue("");
       importData();
     } catch (error) {
-      console.log("Error updating");
+      if (axios.isAxiosError(error)) {
+        console.log("Axios error", error.message);
+      } else {
+        console.log("Unknown eror happened");
+      }
     }
   }
 
