@@ -127,7 +127,10 @@ const App = (): ReactElement => {
                       </button>
                       <button
                         className="bg-gray-400 text-white px-3 py-1 rounded-lg"
-                        onClick={() => setEditId(null)}
+                        onClick={() => {
+                          setEditId(null);
+                          setEditValue("");
+                        }}
                       >
                         Cancel
                       </button>
